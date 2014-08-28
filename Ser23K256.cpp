@@ -18,22 +18,22 @@ void Ser23K256::deselect() {
     _ncs = 1;
 }
 
-void Ser23K256::writeStatus(char status) {
+void Ser23K256::writeStatus(uint8_t status) {
     select();
     _spi.write(WRITE_STATUS);
     _spi.write(status);
     deselect();
 }
 
-char Ser23K256::readStatus() {
+uint8_t Ser23K256::readStatus() {
     select();
     _spi.write(READ_STATUS);
-    char result = (char) _spi.write(0);
+    uint8_t result = (uint8_t) _spi.write(0);
     deselect();
     return result;
 }
 
-void Ser23K256::prepareCommand(char command, int address) {
+void Ser23K256::prepareCommand(uint8_t command, int address) {
     select();
     _spi.write(command);
     _spi.write(address >> 8);
@@ -42,17 +42,17 @@ void Ser23K256::prepareCommand(char command, int address) {
 
 // write or read a single byte
 
-void Ser23K256::write(int address, char byte) {
+void Ser23K256::write(int address, uint8_t byte) {
     prepareCommand(WRITE, address);
     _spi.write(byte);
     deselect();
 }
 
-char Ser23K256::read(int address) {
+uint8_t Ser23K256::read(int address) {
     prepareCommand(READ, address);
     int result = _spi.write(0);
     deselect();
-    return (char) result;
+    return (uint8_t) result;
 }
 
 // buffered write and read
@@ -63,7 +63,7 @@ char Ser23K256::read(int address) {
 * at the start and return it to byte mode at the end.
 */
 
-void Ser23K256::write(int address, char * buffer, int count) {
+void Ser23K256::write(int address, uint8_t * buffer, int count) {
     writeStatus(SEQUENTIAL_MODE);
     prepareCommand(WRITE, address);
     for (int i = 0; i < count; i++) {
@@ -73,7 +73,7 @@ void Ser23K256::write(int address, char * buffer, int count) {
     writeStatus(BYTE_MODE);
 }
 
-void Ser23K256::read(int address, char * buffer, int count) {
+void Ser23K256::read(int address, uint8_t * buffer, int count) {
     writeStatus(SEQUENTIAL_MODE);
     prepareCommand(READ, address);
     for (int i = 0; i < count; i++) {
