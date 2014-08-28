@@ -39,7 +39,7 @@
 * Ser23K256 sram(spi,p14);
 *
 * int main() {
-*   char buff[50];
+*   uint8_t buff[50];
 *   sram.write(0, 'h');
 *   sram.write(1, 'i');
 *   sram.write(2, '!');
@@ -75,32 +75,32 @@ public:
     Ser23K256(SPI& spi, PinName ncs);
 /** read a byte from SRAM
 * @param address    The address to read from
-* @return the character at that address
+* @return the uint8_tacter at that address
 */
-    char read(int address);
+    uint8_t read(int address);
 /** read multiple bytes from SRAM into a buffer
 * @param address    The SRAM address to read from
 * @param buffer     The buffer to read into (must be big enough!)
 * @param count      The number of bytes to read
 */
-    void read(int address, char * buffer, int count);
+    void read(int address, uint8_t * buffer, int count);
 /** write a byte to SRAM
 * @param address    The address SRAM to write to
 * @param byte       The byte to write there
 */
-    void write(int address, char byte);
+    void write(int address, uint8_t byte);
     /** write multiple bytes to SRAM from a buffer
 * @param address    The SRAM address write to
 * @param buffer     The buffer to write from
 * @param count      The number of bytes to write
 */
-    void write(int address, char * buffer, int count);
+    void write(int address, uint8_t * buffer, int count);
 private:
     SPI& _spi;
     DigitalOut _ncs;
-    char readStatus();
-    void writeStatus(char status);
-    void prepareCommand(char command, int address);
+    uint8_t readStatus();
+    void writeStatus(uint8_t status);
+    void prepareCommand(uint8_t command, int address);
     void select();
     void deselect();
 };
